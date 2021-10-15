@@ -1,0 +1,21 @@
+{
+  "abi": [],
+  "evm": {
+    "bytecode": {
+      "linkReferences": {},
+      "object": "60566023600b82828239805160001a607314601657fe5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea26469706673582212205e66936e19c5426e2cc410ba2a118bdc45535a47b90b7aed826d23aa4d831fa364736f6c63430006060033",
+      "opcodes": "PUSH1 0x56 PUSH1 0x23 PUSH1 0xB DUP3 DUP3 DUP3 CODECOPY DUP1 MLOAD PUSH1 0x0 BYTE PUSH1 0x73 EQ PUSH1 0x16 JUMPI INVALID JUMPDEST ADDRESS PUSH1 0x0 MSTORE PUSH1 0x73 DUP2 MSTORE8 DUP3 DUP2 RETURN INVALID PUSH20 0x0 ADDRESS EQ PUSH1 0x80 PUSH1 0x40 MSTORE PUSH1 0x0 DUP1 REVERT INVALID LOG2 PUSH5 0x6970667358 0x22 SLT KECCAK256 0x5E PUSH7 0x936E19C5426E2C 0xC4 LT 0xBA 0x2A GT DUP12 0xDC GASLIMIT MSTORE8 GAS SELFBALANCE 0xB9 SIGNEXTEND PUSH27 0xED826D23AA4D831FA364736F6C6343000606003300000000000000 ",
+      "sourceMap": "608:3321:7:-:0;;132:2:-1;166:7;155:9;146:7;137:37;255:7;249:14;246:1;241:23;235:4;232:33;222:2;;269:9;222:2;293:9;290:1;283:20;323:4;314:7;306:22;347:7;338;331:24"
+    },
+    "deployedBytecode": {
+      "immutableReferences": {},
+      "linkReferences": {},
+      "object": "73000000000000000000000000000000000000000030146080604052600080fdfea26469706673582212205e66936e19c5426e2cc410ba2a118bdc45535a47b90b7aed826d23aa4d831fa364736f6c63430006060033",
+      "opcodes": "PUSH20 0x0 ADDRESS EQ PUSH1 0x80 PUSH1 0x40 MSTORE PUSH1 0x0 DUP1 REVERT INVALID LOG2 PUSH5 0x6970667358 0x22 SLT KECCAK256 0x5E PUSH7 0x936E19C5426E2C 0xC4 LT 0xBA 0x2A GT DUP12 0xDC GASLIMIT MSTORE8 GAS SELFBALANCE 0xB9 SIGNEXTEND PUSH27 0xED826D23AA4D831FA364736F6C6343000606003300000000000000 ",
+      "sourceMap": "608:3321:7:-:0;;;;;;12:1:-1;9;2:12"
+    }
+  },
+  "metadata": "{\"compiler\":{\"version\":\"0.6.6+commit.6c089d02\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"details\":\"Wrappers around ERC20 operations that throw on failure (when the token contract returns false). Tokens that return no value (and instead revert or throw on failure) are also supported, non-reverting calls are assumed to be successful. To use this library you can add a `using SafeERC20 for IERC20;` statement to your contract, which allows you to call the safe operations as `token.safeTransfer(...)`, etc.\",\"methods\":{},\"title\":\"SafeERC20\"},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"@borealisswap/borealis-swap-lib/contracts/token/ERC20/SafeERC20.sol\":\"SafeERC20\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":999999},\"remappings\":[]},\"sources\":{\"@borealisswap/borealis-swap-lib/contracts/math/SafeMath.sol\":{\"keccak256\":\"0xd4b1686c1494213666dc1423cea64333c3063f334327216d69ca3d59f75a2517\",\"urls\":[\"bzz-raw://3a3c967dc005a8966266b6052724b7cd04231c6d95abcc03f49e1cbb9ffb890a\",\"dweb:/ipfs/QmRWofmmac5HLRYpMTDQLzmgZyJYeYLB2MY8uTFRKfJuJL\"]},\"@borealisswap/borealis-swap-lib/contracts/token/ERC20/IERC20.sol\":{\"keccak256\":\"0xfe472cfa1c28202bbef720a7449e6353b355a82e2bd0779516f02a60c5aa2803\",\"urls\":[\"bzz-raw://279f3f467bab92a81c249953ead8209f226a59a32946e537a59cf6ff7aceac47\",\"dweb:/ipfs/QmYaJmRKuLCNX67SCMncPJmApHjemNqqzAvpzotA6XdXew\"]},\"@borealisswap/borealis-swap-lib/contracts/token/ERC20/SafeERC20.sol\":{\"keccak256\":\"0xfb08d9b5c1279d336896c24122ed4403e804d39013a52d39346a0e1423050fbc\",\"urls\":[\"bzz-raw://a88101e7b0083adb146f8d1bb99ff1a3f956aad4601b09d173218e6f55922400\",\"dweb:/ipfs/QmTV1zEsNt5NzXSEKkUfWpUC9tw9HVxvYoWh2CKT1HvrqM\"]},\"@borealisswap/borealis-swap-lib/contracts/utils/Address.sol\":{\"keccak256\":\"0x806c8686fdf1afac78d0828ca7941e5ac30282a358d23cf502ec39893c64d4af\",\"urls\":[\"bzz-raw://be41cfa7e8aaf4c95e1517007964cef2470abd47ad578293db4cd25434ee77ea\",\"dweb:/ipfs/QmPX9qcHJNv1vA6Nxue8c46wxdXwKdLcUyXxEQ91F93u7a\"]}},\"version\":1}",
+  "interface": [],
+  "bytecode": "60566023600b82828239805160001a607314601657fe5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea26469706673582212205e66936e19c5426e2cc410ba2a118bdc45535a47b90b7aed826d23aa4d831fa364736f6c63430006060033"
+}

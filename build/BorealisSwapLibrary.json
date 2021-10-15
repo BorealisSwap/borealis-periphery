@@ -1,0 +1,21 @@
+{
+  "abi": [],
+  "evm": {
+    "bytecode": {
+      "linkReferences": {},
+      "object": "60566023600b82828239805160001a607314601657fe5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea26469706673582212209167df364c48331678b6fcc1fa7d52b4839ecc422ac9aba953d203566e49957664736f6c63430006060033",
+      "opcodes": "PUSH1 0x56 PUSH1 0x23 PUSH1 0xB DUP3 DUP3 DUP3 CODECOPY DUP1 MLOAD PUSH1 0x0 BYTE PUSH1 0x73 EQ PUSH1 0x16 JUMPI INVALID JUMPDEST ADDRESS PUSH1 0x0 MSTORE PUSH1 0x73 DUP2 MSTORE8 DUP3 DUP2 RETURN INVALID PUSH20 0x0 ADDRESS EQ PUSH1 0x80 PUSH1 0x40 MSTORE PUSH1 0x0 DUP1 REVERT INVALID LOG2 PUSH5 0x6970667358 0x22 SLT KECCAK256 SWAP2 PUSH8 0xDF364C48331678B6 0xFC 0xC1 STATICCALL PUSH30 0x52B4839ECC422AC9ABA953D203566E49957664736F6C6343000606003300 ",
+      "sourceMap": "174:4812:17:-:0;;132:2:-1;166:7;155:9;146:7;137:37;255:7;249:14;246:1;241:23;235:4;232:33;222:2;;269:9;222:2;293:9;290:1;283:20;323:4;314:7;306:22;347:7;338;331:24"
+    },
+    "deployedBytecode": {
+      "immutableReferences": {},
+      "linkReferences": {},
+      "object": "73000000000000000000000000000000000000000030146080604052600080fdfea26469706673582212209167df364c48331678b6fcc1fa7d52b4839ecc422ac9aba953d203566e49957664736f6c63430006060033",
+      "opcodes": "PUSH20 0x0 ADDRESS EQ PUSH1 0x80 PUSH1 0x40 MSTORE PUSH1 0x0 DUP1 REVERT INVALID LOG2 PUSH5 0x6970667358 0x22 SLT KECCAK256 SWAP2 PUSH8 0xDF364C48331678B6 0xFC 0xC1 STATICCALL PUSH30 0x52B4839ECC422AC9ABA953D203566E49957664736F6C6343000606003300 ",
+      "sourceMap": "174:4812:17:-:0;;;;;;12:1:-1;9;2:12"
+    }
+  },
+  "metadata": "{\"compiler\":{\"version\":\"0.6.6+commit.6c089d02\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"contracts/libraries/BorealisSwapLibrary.sol\":\"BorealisSwapLibrary\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":999999},\"remappings\":[]},\"sources\":{\"@borealisswap/borealis-core/contracts/interfaces/IBorealisPair.sol\":{\"keccak256\":\"0x81aed094efd37772356c4322407f816344c425b80f577151ef64c9b0f756573d\",\"urls\":[\"bzz-raw://f14a95edece173a2ac6d8ef7bafd7dff01287c5f2e478454a50173a71c3b09fa\",\"dweb:/ipfs/QmZmtXoyRmyHjxaNoJYsFW5MKa56HT6vZU9uK7EBmbY9bY\"]},\"@borealisswap/borealis-swap-lib/contracts/math/SafeMath.sol\":{\"keccak256\":\"0xd4b1686c1494213666dc1423cea64333c3063f334327216d69ca3d59f75a2517\",\"urls\":[\"bzz-raw://3a3c967dc005a8966266b6052724b7cd04231c6d95abcc03f49e1cbb9ffb890a\",\"dweb:/ipfs/QmRWofmmac5HLRYpMTDQLzmgZyJYeYLB2MY8uTFRKfJuJL\"]},\"contracts/libraries/BorealisSwapLibrary.sol\":{\"keccak256\":\"0xbf3b12a811ea73dcf2786232d000396ac3814c38eff10f3a3f50282f540ad8a3\",\"urls\":[\"bzz-raw://f5d62c3ad1b2bbb0ea24bfba532e7159d1dc6902392b995f576ee3a2d1abbd92\",\"dweb:/ipfs/QmYphgQNFCmUL54CJBDSm7gUSReisc2DGszNXh737rfvmo\"]}},\"version\":1}",
+  "interface": [],
+  "bytecode": "60566023600b82828239805160001a607314601657fe5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea26469706673582212209167df364c48331678b6fcc1fa7d52b4839ecc422ac9aba953d203566e49957664736f6c63430006060033"
+}
