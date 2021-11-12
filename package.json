@@ -11,7 +11,9 @@
   ],
   "dependencies": {
     "@borealisswap/borealis-core": "1.0.0",
-    "@borealisswap/borealis-swap-lib": "0.0.1"
+    "@borealisswap/borealis-swap-lib": "1.0.0",
+    "@poanet/solidity-flattener": "^3.0.6",
+    "truffle-contract-size": "^2.0.1"
   },
   "devDependencies": {
     "@ethersproject/abi": "^5.0.3",
@@ -23,8 +25,8 @@
     "ethers": "^4.0.48",
     "mocha": "^6.2.2",
     "ncp": "^2.0.0",
-    "prettier": "^1.19.1",
-    "prettier-plugin-solidity": "^1.0.0-alpha.57",
+    "prettier": "1.19.1",
+    "prettier-plugin-solidity": "1.0.0-alpha.57",
     "rimraf": "^3.0.0",
     "solc": "0.6.6",
     "ts-node": "^8.5.4",

@@ -2,7 +2,7 @@ pragma solidity =0.6.6;
 
 import '@borealisswap/borealis-swap-lib/contracts/token/ERC20/ERC20.sol';
 
-contract BorealisToken is ERC20('BorealisToken', 'BORE') {
+contract BorealisToken is ERC20('BorealisToken', 'DEW') {
     /// @notice Creates `_amount` token to `_to`. Must only be called by the owner (BorealisMaster).
     function mintTo(address _to, uint256 _amount) public onlyOwner {
         _mint(_to, _amount);

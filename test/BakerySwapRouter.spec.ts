@@ -1,17 +1,17 @@
-import chai, { expect } from 'chai'
+import chai, {expect} from 'chai'
 import * as ethers from 'ethers'
-import { solidity, MockProvider, createFixtureLoader, deployContract } from 'ethereum-waffle'
-import { Contract } from 'ethers'
-import { BigNumber, bigNumberify } from 'ethers/utils'
-import { MaxUint256 } from 'ethers/constants'
+import {solidity, MockProvider, createFixtureLoader, deployContract} from 'ethereum-waffle'
+import {Contract} from 'ethers'
+import {BigNumber, bigNumberify} from 'ethers/utils'
+import {MaxUint256} from 'ethers/constants'
 import ISwapPair from '@BakeryProject/bakery-swap-core/build/IBakerySwapPair.json'
 import SwapPair from '@BakeryProject/bakery-swap-core/build/BakerySwapPair.json'
 
-import { Fixture } from './shared/fixtures'
-import { expandTo18Decimals, getApprovalDigest, getCreate2Address, MINIMUM_LIQUIDITY } from './shared/utilities'
+import {Fixture} from './shared/fixtures'
+import {expandTo18Decimals, getApprovalDigest, getCreate2Address, MINIMUM_LIQUIDITY} from './shared/utilities'
 
 import DeflatingBEP20 from '../build/DeflatingBEP20.json'
-import { ecsign } from 'ethereumjs-util'
+import {ecsign} from 'ethereumjs-util'
 
 import SwapRouter from '../build/BakerySwapRouter.json'
 import BEP20 from '../build/IBEP20.json'
@@ -201,11 +201,11 @@ describe('fee-on-transfer tokens', () => {
     const nonce = await pair.nonces(wallet.address)
     const digest = await getApprovalDigest(
       pair,
-      { owner: wallet.address, spender: router.address, value: expectedLiquidity.sub(MINIMUM_LIQUIDITY) },
+      {owner: wallet.address, spender: router.address, value: expectedLiquidity.sub(MINIMUM_LIQUIDITY)},
       nonce,
       MaxUint256
     )
-    const { v, r, s } = ecsign(Buffer.from(digest.slice(2), 'hex'), Buffer.from(wallet.privateKey.slice(2), 'hex'))
+    const {v, r, s} = ecsign(Buffer.from(digest.slice(2), 'hex'), Buffer.from(wallet.privateKey.slice(2), 'hex'))
 
     const DTTInPair = await dtt.balanceOf(pair.address)
     const WBNBInPair = await wbnb.balanceOf(pair.address)
@@ -256,7 +256,7 @@ describe('fee-on-transfer tokens', () => {
 
     // WBNB -> DTT
     it('WBNB -> DTT', async () => {
-      await wbnb.deposit({ value: amountIn }) // mint WBNB
+      await wbnb.deposit({value: amountIn}) // mint WBNB
       await wbnb.approve(router.address, MaxUint256)
 
       await router.swapExactTokensForTokensSupportingFeeOnTransferTokens(

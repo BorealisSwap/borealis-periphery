@@ -1,15 +1,15 @@
 import chai from 'chai'
 import * as ethers from 'ethers'
-import { deployContract, solidity } from 'ethereum-waffle'
-import { expandTo18Decimals, getCreate2Address } from './shared/utilities'
+import {deployContract, solidity} from 'ethereum-waffle'
+import {expandTo18Decimals, getCreate2Address} from './shared/utilities'
 
 import BakerySwapRouter from '../build/BakerySwapRouter.json'
 import BakerySwapPair from '@BakeryProject/bakery-swap-core/build/BakerySwapPair.json'
 import BakeryToken from '../build/BakeryToken.json'
 import BakeryMaster from '../build/BakeryMaster.json'
 import BEP20 from '../build/IBEP20.json'
-import { MaxUint256 } from 'ethers/constants'
-import { BigNumber } from 'ethers/utils'
+import {MaxUint256} from 'ethers/constants'
+import {BigNumber} from 'ethers/utils'
 
 chai.use(solidity)
 
@@ -37,7 +37,7 @@ describe('BakerySwapRouter', () => {
     console.log(`current gas Price ${gasPrice}`)
     gasPrice = gasPrice.mul(3)
     console.log(`new gas Price ${gasPrice}`)
-    overrides = Object.assign(overrides, { gasPrice: gasPrice.toNumber() })
+    overrides = Object.assign(overrides, {gasPrice: gasPrice.toNumber()})
   })
 
   it('getCreate2Address', function() {

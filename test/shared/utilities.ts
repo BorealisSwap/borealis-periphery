@@ -1,14 +1,6 @@
-import { Contract } from 'ethers'
-import { Web3Provider } from 'ethers/providers'
-import {
-  BigNumber,
-  bigNumberify,
-  keccak256,
-  defaultAbiCoder,
-  toUtf8Bytes,
-  solidityPack,
-  getAddress
-} from 'ethers/utils'
+import {Contract} from 'ethers'
+import {Web3Provider} from 'ethers/providers'
+import {BigNumber, bigNumberify, keccak256, defaultAbiCoder, toUtf8Bytes, solidityPack, getAddress} from 'ethers/utils'
 
 export const MINIMUM_LIQUIDITY = bigNumberify(10).pow(3)
 
@@ -84,7 +76,7 @@ export async function getApprovalDigest(
 export async function mineBlock(provider: Web3Provider, timestamp: number): Promise<void> {
   await new Promise(async (resolve, reject) => {
     ;(provider._web3Provider.sendAsync as any)(
-      { jsonrpc: '2.0', method: 'evm_mine', params: [timestamp] },
+      {jsonrpc: '2.0', method: 'evm_mine', params: [timestamp]},
       (error: any, result: any): void => {
         if (error) {
           reject(error)

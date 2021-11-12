@@ -15,7 +15,7 @@ contract BorealisSwapRouter is IBorealisSwapRouter {
     address public immutable override WETH;
 
     modifier ensure(uint256 deadline) {
-        require(deadline >= block.timestamp, 'BorealisSwapRouter: EXPIRED');
+        require(deadline >= block.timestamp, 'EXPIRED');
         _;
     }
 
@@ -25,7 +25,7 @@ contract BorealisSwapRouter is IBorealisSwapRouter {
     }
 
     receive() external payable {
-        assert(msg.sender == WETH); // only accept BNB via fallback from the WETH contract
+        assert(msg.sender == WETH); // only accept ETH via fallback from the WETH contract
     }
 
     // **** ADD LIQUIDITY ****
@@ -47,12 +47,12 @@ contract BorealisSwapRouter is IBorealisSwapRouter {
         } else {
             uint256 amountBOptimal = BorealisSwapLibrary.quote(amountADesired, reserveA, reserveB);
             if (amountBOptimal <= amountBDesired) {
-                require(amountBOptimal >= amountBMin, 'BorealisSwapRouter: INSUFFICIENT_B_AMOUNT');
+                require(amountBOptimal >= amountBMin, 'INSUFFICIENT_B_AMOUNT');
                 (amountA, amountB) = (amountADesired, amountBOptimal);
             } else {
                 uint256 amountAOptimal = BorealisSwapLibrary.quote(amountBDesired, reserveB, reserveA);
                 assert(amountAOptimal <= amountADesired);
-                require(amountAOptimal >= amountAMin, 'BorealisSwapRouter: INSUFFICIENT_A_AMOUNT');
+                require(amountAOptimal >= amountAMin, 'INSUFFICIENT_A_AMOUNT');
                 (amountA, amountB) = (amountAOptimal, amountBDesired);
             }
         }
@@ -85,11 +85,11 @@ contract BorealisSwapRouter is IBorealisSwapRouter {
         liquidity = IBorealisPair(pair).mint(to);
     }
 
-    function addLiquidityBNB(
+    function addLiquidityETH(
         address token,
         uint256 amountTokenDesired,
         uint256 amountTokenMin,
-        uint256 amountBNBMin,
+        uint256 amountETHMin,
         address to,
         uint256 deadline
     )
@@ -100,25 +100,25 @@ contract BorealisSwapRouter is IBorealisSwapRouter {
         ensure(deadline)
         returns (
             uint256 amountToken,
-            uint256 amountBNB,
+            uint256 amountETH,
             uint256 liquidity
         )
     {
-        (amountToken, amountBNB) = _addLiquidity(
+        (amountToken, amountETH) = _addLiquidity(
             token,
             WETH,
             amountTokenDesired,
             msg.value,
             amountTokenMin,
-            amountBNBMin
+            amountETHMin
         );
         address pair = BorealisSwapLibrary.pairFor(factory, token, WETH);
         TransferHelper.safeTransferFrom(token, msg.sender, pair, amountToken);
-        IWETH(WETH).deposit{value: amountBNB}();
-        assert(IWETH(WETH).transfer(pair, amountBNB));
+        IWETH(WETH).deposit{value: amountETH}();
+        assert(IWETH(WETH).transfer(pair, amountETH));
         liquidity = IBorealisPair(pair).mint(to);
-        // refund dust bnb, if any
-        if (msg.value > amountBNB) TransferHelper.safeTransferBNB(msg.sender, msg.value - amountBNB);
+        // refund dust ETH, if any
+        if (msg.value > amountETH) TransferHelper.safeTransferETH(msg.sender, msg.value - amountETH);
     }
 
     // **** REMOVE LIQUIDITY ****
@@ -136,30 +136,30 @@ contract BorealisSwapRouter is IBorealisSwapRouter {
         (uint256 amount0, uint256 amount1) = IBorealisPair(pair).burn(to);
         (address token0, ) = BorealisSwapLibrary.sortTokens(tokenA, tokenB);
         (amountA, amountB) = tokenA == token0 ? (amount0, amount1) : (amount1, amount0);
-        require(amountA >= amountAMin, 'BorealisSwapRouter: INSUFFICIENT_A_AMOUNT');
-        require(amountB >= amountBMin, 'BorealisSwapRouter: INSUFFICIENT_B_AMOUNT');
+        require(amountA >= amountAMin, 'INSUFFICIENT_A_AMOUNT');
+        require(amountB >= amountBMin, 'INSUFFICIENT_B_AMOUNT');
     }
 
-    function removeLiquidityBNB(
+    function removeLiquidityETH(
         address token,
         uint256 liquidity,
         uint256 amountTokenMin,
-        uint256 amountBNBMin,
+        uint256 amountETHMin,
         address to,
         uint256 deadline
-    ) public virtual override ensure(deadline) returns (uint256 amountToken, uint256 amountBNB) {
-        (amountToken, amountBNB) = removeLiquidity(
+    ) public virtual override ensure(deadline) returns (uint256 amountToken, uint256 amountETH) {
+        (amountToken, amountETH) = removeLiquidity(
             token,
             WETH,
             liquidity,
             amountTokenMin,
-            amountBNBMin,
+            amountETHMin,
             address(this),
             deadline
         );
         TransferHelper.safeTransfer(token, to, amountToken);
-        IWETH(WETH).withdraw(amountBNB);
-        TransferHelper.safeTransferBNB(to, amountBNB);
+        IWETH(WETH).withdraw(amountETH);
+        TransferHelper.safeTransferETH(to, amountETH);
     }
 
     function removeLiquidityWithPermit(
@@ -181,59 +181,59 @@ contract BorealisSwapRouter is IBorealisSwapRouter {
         (amountA, amountB) = removeLiquidity(tokenA, tokenB, liquidity, amountAMin, amountBMin, to, deadline);
     }
 
-    function removeLiquidityBNBWithPermit(
+    function removeLiquidityETHWithPermit(
         address token,
         uint256 liquidity,
         uint256 amountTokenMin,
-        uint256 amountBNBMin,
+        uint256 amountETHMin,
         address to,
         uint256 deadline,
         bool approveMax,
         uint8 v,
         bytes32 r,
         bytes32 s
-    ) external virtual override returns (uint256 amountToken, uint256 amountBNB) {
+    ) external virtual override returns (uint256 amountToken, uint256 amountETH) {
         address pair = BorealisSwapLibrary.pairFor(factory, token, WETH);
         uint256 value = approveMax ? uint256(-1) : liquidity;
         IBorealisPair(pair).permit(msg.sender, address(this), value, deadline, v, r, s);
-        (amountToken, amountBNB) = removeLiquidityBNB(token, liquidity, amountTokenMin, amountBNBMin, to, deadline);
+        (amountToken, amountETH) = removeLiquidityETH(token, liquidity, amountTokenMin, amountETHMin, to, deadline);
     }
 
     // **** REMOVE LIQUIDITY (supporting fee-on-transfer tokens) ****
-    function removeLiquidityBNBSupportingFeeOnTransferTokens(
+    function removeLiquidityETHSupportingFeeOnTransferTokens(
         address token,
         uint256 liquidity,
         uint256 amountTokenMin,
-        uint256 amountBNBMin,
+        uint256 amountETHMin,
         address to,
         uint256 deadline
-    ) public virtual override ensure(deadline) returns (uint256 amountBNB) {
-        (, amountBNB) = removeLiquidity(token, WETH, liquidity, amountTokenMin, amountBNBMin, address(this), deadline);
+    ) public virtual override ensure(deadline) returns (uint256 amountETH) {
+        (, amountETH) = removeLiquidity(token, WETH, liquidity, amountTokenMin, amountETHMin, address(this), deadline);
         TransferHelper.safeTransfer(token, to, IERC20(token).balanceOf(address(this)));
-        IWETH(WETH).withdraw(amountBNB);
-        TransferHelper.safeTransferBNB(to, amountBNB);
+        IWETH(WETH).withdraw(amountETH);
+        TransferHelper.safeTransferETH(to, amountETH);
     }
 
-    function removeLiquidityBNBWithPermitSupportingFeeOnTransferTokens(
+    function removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(
         address token,
         uint256 liquidity,
         uint256 amountTokenMin,
-        uint256 amountBNBMin,
+        uint256 amountETHMin,
         address to,
         uint256 deadline,
         bool approveMax,
         uint8 v,
         bytes32 r,
         bytes32 s
-    ) external virtual override returns (uint256 amountBNB) {
+    ) external virtual override returns (uint256 amountETH) {
         address pair = BorealisSwapLibrary.pairFor(factory, token, WETH);
         uint256 value = approveMax ? uint256(-1) : liquidity;
         IBorealisPair(pair).permit(msg.sender, address(this), value, deadline, v, r, s);
-        amountBNB = removeLiquidityBNBSupportingFeeOnTransferTokens(
+        amountETH = removeLiquidityETHSupportingFeeOnTransferTokens(
             token,
             liquidity,
             amountTokenMin,
-            amountBNBMin,
+            amountETHMin,
             to,
             deadline
         );
@@ -254,7 +254,12 @@ contract BorealisSwapRouter is IBorealisSwapRouter {
                 ? (uint256(0), amountOut)
                 : (amountOut, uint256(0));
             address to = i < path.length - 2 ? BorealisSwapLibrary.pairFor(factory, output, path[i + 2]) : _to;
-            IBorealisPair(BorealisSwapLibrary.pairFor(factory, input, output)).swap(amount0Out, amount1Out, to, new bytes(0));
+            IBorealisPair(BorealisSwapLibrary.pairFor(factory, input, output)).swap(
+                amount0Out,
+                amount1Out,
+                to,
+                new bytes(0)
+            );
         }
     }
 
@@ -266,7 +271,7 @@ contract BorealisSwapRouter is IBorealisSwapRouter {
         uint256 deadline
     ) external virtual override ensure(deadline) returns (uint256[] memory amounts) {
         amounts = BorealisSwapLibrary.getAmountsOut(factory, amountIn, path);
-        require(amounts[amounts.length - 1] >= amountOutMin, 'BorealisSwapRouter: INSUFFICIENT_OUTPUT_AMOUNT');
+        require(amounts[amounts.length - 1] >= amountOutMin, 'INSUFFICIENT_OUTPUT_AMOUNT');
         TransferHelper.safeTransferFrom(
             path[0],
             msg.sender,
@@ -284,7 +289,7 @@ contract BorealisSwapRouter is IBorealisSwapRouter {
         uint256 deadline
     ) external virtual override ensure(deadline) returns (uint256[] memory amounts) {
         amounts = BorealisSwapLibrary.getAmountsIn(factory, amountOut, path);
-        require(amounts[0] <= amountInMax, 'BorealisSwapRouter: EXCESSIVE_INPUT_AMOUNT');
+        require(amounts[0] <= amountInMax, 'EXCESSIVE_INPUT_AMOUNT');
         TransferHelper.safeTransferFrom(
             path[0],
             msg.sender,
@@ -294,30 +299,30 @@ contract BorealisSwapRouter is IBorealisSwapRouter {
         _swap(amounts, path, to);
     }
 
-    function swapExactBNBForTokens(
+    function swapExactETHForTokens(
         uint256 amountOutMin,
         address[] calldata path,
         address to,
         uint256 deadline
     ) external virtual override payable ensure(deadline) returns (uint256[] memory amounts) {
-        require(path[0] == WETH, 'BorealisSwapRouter: INVALID_PATH');
+        require(path[0] == WETH, 'INVALID_PATH');
         amounts = BorealisSwapLibrary.getAmountsOut(factory, msg.value, path);
-        require(amounts[amounts.length - 1] >= amountOutMin, 'BorealisSwapRouter: INSUFFICIENT_OUTPUT_AMOUNT');
+        require(amounts[amounts.length - 1] >= amountOutMin, 'INSUFFICIENT_OUTPUT_AMOUNT');
         IWETH(WETH).deposit{value: amounts[0]}();
         assert(IWETH(WETH).transfer(BorealisSwapLibrary.pairFor(factory, path[0], path[1]), amounts[0]));
         _swap(amounts, path, to);
     }
 
-    function swapTokensForExactBNB(
+    function swapTokensForExactETH(
         uint256 amountOut,
         uint256 amountInMax,
         address[] calldata path,
         address to,
         uint256 deadline
     ) external virtual override ensure(deadline) returns (uint256[] memory amounts) {
-        require(path[path.length - 1] == WETH, 'BorealisSwapRouter: INVALID_PATH');
+        require(path[path.length - 1] == WETH, 'INVALID_PATH');
         amounts = BorealisSwapLibrary.getAmountsIn(factory, amountOut, path);
-        require(amounts[0] <= amountInMax, 'BorealisSwapRouter: EXCESSIVE_INPUT_AMOUNT');
+        require(amounts[0] <= amountInMax, 'EXCESSIVE_INPUT_AMOUNT');
         TransferHelper.safeTransferFrom(
             path[0],
             msg.sender,
@@ -326,19 +331,19 @@ contract BorealisSwapRouter is IBorealisSwapRouter {
         );
         _swap(amounts, path, address(this));
         IWETH(WETH).withdraw(amounts[amounts.length - 1]);
-        TransferHelper.safeTransferBNB(to, amounts[amounts.length - 1]);
+        TransferHelper.safeTransferETH(to, amounts[amounts.length - 1]);
     }
 
-    function swapExactTokensForBNB(
+    function swapExactTokensForETH(
         uint256 amountIn,
         uint256 amountOutMin,
         address[] calldata path,
         address to,
         uint256 deadline
     ) external virtual override ensure(deadline) returns (uint256[] memory amounts) {
-        require(path[path.length - 1] == WETH, 'BorealisSwapRouter: INVALID_PATH');
+        require(path[path.length - 1] == WETH, 'INVALID_PATH');
         amounts = BorealisSwapLibrary.getAmountsOut(factory, amountIn, path);
-        require(amounts[amounts.length - 1] >= amountOutMin, 'BorealisSwapRouter: INSUFFICIENT_OUTPUT_AMOUNT');
+        require(amounts[amounts.length - 1] >= amountOutMin, 'INSUFFICIENT_OUTPUT_AMOUNT');
         TransferHelper.safeTransferFrom(
             path[0],
             msg.sender,
@@ -347,23 +352,23 @@ contract BorealisSwapRouter is IBorealisSwapRouter {
         );
         _swap(amounts, path, address(this));
         IWETH(WETH).withdraw(amounts[amounts.length - 1]);
-        TransferHelper.safeTransferBNB(to, amounts[amounts.length - 1]);
+        TransferHelper.safeTransferETH(to, amounts[amounts.length - 1]);
     }
 
-    function swapBNBForExactTokens(
+    function swapETHForExactTokens(
         uint256 amountOut,
         address[] calldata path,
         address to,
         uint256 deadline
     ) external virtual override payable ensure(deadline) returns (uint256[] memory amounts) {
-        require(path[0] == WETH, 'BorealisSwapRouter: INVALID_PATH');
+        require(path[0] == WETH, 'INVALID_PATH');
         amounts = BorealisSwapLibrary.getAmountsIn(factory, amountOut, path);
-        require(amounts[0] <= msg.value, 'BorealisSwapRouter: EXCESSIVE_INPUT_AMOUNT');
+        require(amounts[0] <= msg.value, 'EXCESSIVE_INPUT_AMOUNT');
         IWETH(WETH).deposit{value: amounts[0]}();
         assert(IWETH(WETH).transfer(BorealisSwapLibrary.pairFor(factory, path[0], path[1]), amounts[0]));
         _swap(amounts, path, to);
-        // refund dust bnb, if any
-        if (msg.value > amounts[0]) TransferHelper.safeTransferBNB(msg.sender, msg.value - amounts[0]);
+        // refund dust ETH, if any
+        if (msg.value > amounts[0]) TransferHelper.safeTransferETH(msg.sender, msg.value - amounts[0]);
     }
 
     // **** SWAP (supporting fee-on-transfer tokens) ****
@@ -409,17 +414,17 @@ contract BorealisSwapRouter is IBorealisSwapRouter {
         _swapSupportingFeeOnTransferTokens(path, to);
         require(
             IERC20(path[path.length - 1]).balanceOf(to).sub(balanceBefore) >= amountOutMin,
-            'BorealisSwapRouter: INSUFFICIENT_OUTPUT_AMOUNT'
+            'INSUFFICIENT_OUTPUT_AMOUNT'
         );
     }
 
-    function swapExactBNBForTokensSupportingFeeOnTransferTokens(
+    function swapExactETHForTokensSupportingFeeOnTransferTokens(
         uint256 amountOutMin,
         address[] calldata path,
         address to,
         uint256 deadline
     ) external virtual override payable ensure(deadline) {
-        require(path[0] == WETH, 'BorealisSwapRouter: INVALID_PATH');
+        require(path[0] == WETH, 'INVALID_PATH');
         uint256 amountIn = msg.value;
         IWETH(WETH).deposit{value: amountIn}();
         assert(IWETH(WETH).transfer(BorealisSwapLibrary.pairFor(factory, path[0], path[1]), amountIn));
@@ -427,18 +432,18 @@ contract BorealisSwapRouter is IBorealisSwapRouter {
         _swapSupportingFeeOnTransferTokens(path, to);
         require(
             IERC20(path[path.length - 1]).balanceOf(to).sub(balanceBefore) >= amountOutMin,
-            'BorealisSwapRouter: INSUFFICIENT_OUTPUT_AMOUNT'
+            'INSUFFICIENT_OUTPUT_AMOUNT'
         );
     }
 
-    function swapExactTokensForBNBSupportingFeeOnTransferTokens(
+    function swapExactTokensForETHSupportingFeeOnTransferTokens(
         uint256 amountIn,
         uint256 amountOutMin,
         address[] calldata path,
         address to,
         uint256 deadline
     ) external virtual override ensure(deadline) {
-        require(path[path.length - 1] == WETH, 'BorealisSwapRouter: INVALID_PATH');
+        require(path[path.length - 1] == WETH, 'INVALID_PATH');
         TransferHelper.safeTransferFrom(
             path[0],
             msg.sender,
@@ -447,9 +452,9 @@ contract BorealisSwapRouter is IBorealisSwapRouter {
         );
         _swapSupportingFeeOnTransferTokens(path, address(this));
         uint256 amountOut = IERC20(WETH).balanceOf(address(this));
-        require(amountOut >= amountOutMin, 'BorealisSwapRouter: INSUFFICIENT_OUTPUT_AMOUNT');
+        require(amountOut >= amountOutMin, 'INSUFFICIENT_OUTPUT_AMOUNT');
         IWETH(WETH).withdraw(amountOut);
-        TransferHelper.safeTransferBNB(to, amountOut);
+        TransferHelper.safeTransferETH(to, amountOut);
     }
 
     // **** LIBRARY FUNCTIONS ****

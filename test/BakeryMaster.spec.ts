@@ -1,11 +1,11 @@
 import chai from 'chai'
 import * as ethers from 'ethers'
-import { deployContract, solidity } from 'ethereum-waffle'
-import { expandTo18Decimals, getCreate2Address } from './shared/utilities'
+import {deployContract, solidity} from 'ethereum-waffle'
+import {expandTo18Decimals, getCreate2Address} from './shared/utilities'
 
 import BakeryMaster from '../build/BakeryMaster.json'
 import BEP20 from '../build/IBEP20.json'
-import { MaxUint256 } from 'ethers/constants'
+import {MaxUint256} from 'ethers/constants'
 
 chai.use(solidity)
 
@@ -27,7 +27,7 @@ describe('BakeryMaster', () => {
     console.log(`current gas Price ${gasPrice}`)
     gasPrice = gasPrice.mul(3)
     console.log(`new gas Price ${gasPrice}`)
-    overrides = Object.assign(overrides, { gasPrice: gasPrice.toNumber() })
+    overrides = Object.assign(overrides, {gasPrice: gasPrice.toNumber()})
   })
   it('poolLength', async () => {
     const bakeryToken = new ethers.Contract(bakeryMasterAddress, JSON.stringify(BakeryMaster.abi), provider).connect(

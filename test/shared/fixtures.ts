@@ -1,8 +1,8 @@
-import { Wallet, Contract } from 'ethers'
-import { Web3Provider } from 'ethers/providers'
-import { deployContract } from 'ethereum-waffle'
+import {Wallet, Contract} from 'ethers'
+import {Web3Provider} from 'ethers/providers'
+import {deployContract} from 'ethereum-waffle'
 
-import { expandTo18Decimals } from './utilities'
+import {expandTo18Decimals} from './utilities'
 
 import SwapFactory from '@BakeryProject/bakery-swap-core/build/BakerySwapFactory.json'
 import ISwapPair from '@BakeryProject/bakery-swap-core/build/IBakerySwapPair.json'

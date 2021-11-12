@@ -1,5 +1,5 @@
-import { BigNumber } from 'ethers/utils'
-import { expect } from 'chai'
+import {BigNumber} from 'ethers/utils'
+import {expect} from 'chai'
 
 const bakeStartBlock = new BigNumber(4).mul(new BigNumber(10).pow(17)) // 一块0.4个
 const startBlock = new BigNumber(1).mul(new BigNumber(10).pow(7))
